@@ -1,0 +1,1 @@
+ywcolorpp.exe /console /image seperate.exe /class RichEdit20A /foreground #101010 /background #e0f0e0

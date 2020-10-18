@@ -1,4 +1,4 @@
-#include "remoterichedit.h"
+ï»¿#include "remoterichedit.h"
 
 #include <cassert>
 #include <iostream>
@@ -9,20 +9,20 @@ void set_rich_edit_background_color(HWND rich_edit, COLORREF color) {
 }
 
 /*
-NOTE: ĞèÒªÎªÔ¶³Ì½ø³Ì·ÖÅäÄÚ´æ£¬È»ºó°ÑÕâ¸öµØÖ·Öµ´«¸øÔ¶³Ì½ø³ÌÈÃÆä·ÃÎÊ¡£
-²»ÄÜÔÚ±¾½ø³Ì·ÖÅä£¬È»ºó°ÑÕâ¸öµØÖ·Öµ¸øÔ¶³Ì½ø³ÌÓÃ£¬ÕâÑùµ¼ÖÂÔ¶³Ì½ø³Ì·ÃÎÊÀ¬»øÄÚ´æ¡£
+NOTE: éœ€è¦ä¸ºè¿œç¨‹è¿›ç¨‹åˆ†é…å†…å­˜ï¼Œç„¶åæŠŠè¿™ä¸ªåœ°å€å€¼ä¼ ç»™è¿œç¨‹è¿›ç¨‹è®©å…¶è®¿é—®ã€‚
+ä¸èƒ½åœ¨æœ¬è¿›ç¨‹åˆ†é…ï¼Œç„¶åæŠŠè¿™ä¸ªåœ°å€å€¼ç»™è¿œç¨‹è¿›ç¨‹ç”¨ï¼Œè¿™æ ·å¯¼è‡´è¿œç¨‹è¿›ç¨‹è®¿é—®åƒåœ¾å†…å­˜ã€‚
 */
 void set_rich_edit_foreground_color(HWND rich_edit, COLORREF color) {
 	bool br;
 
-	// ¹¹Ôì¸ñÊ½²ÎÊı
+	// æ„é€ æ ¼å¼å‚æ•°
 	CHARFORMAT fmt = { 0 };
 	fmt.cbSize = sizeof(CHARFORMAT);
 	fmt.dwMask = CFM_COLOR;
 	fmt.dwEffects = 0;
 	fmt.crTextColor = color;
 
-	// ÎªÄ¿±ê½ø³Ì·ÖÅä²ÎÊıÄÚ´æ
+	// ä¸ºç›®æ ‡è¿›ç¨‹åˆ†é…å‚æ•°å†…å­˜
 	DWORD pid = 0;
 	GetWindowThreadProcessId(rich_edit, &pid);
 	HANDLE h_process = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
@@ -39,7 +39,7 @@ void set_rich_edit_foreground_color(HWND rich_edit, COLORREF color) {
 	}
 	SIZE_T bytes_written = 0;
 	
-	// ¸´ÖÆ¸ñÊ½²ÎÊıµ½Ä¿±ê½ø³Ì
+	// å¤åˆ¶æ ¼å¼å‚æ•°åˆ°ç›®æ ‡è¿›ç¨‹
 	br = WriteProcessMemory(
 		h_process,
 		remote_ptr,
@@ -49,10 +49,10 @@ void set_rich_edit_foreground_color(HWND rich_edit, COLORREF color) {
 	);
 	assert(br);
 
-	// ·¢ËÍÉèÖÃ¸ñÊ½ÏûÏ¢
+	// å‘é€è®¾ç½®æ ¼å¼æ¶ˆæ¯
 	SendMessage(rich_edit, EM_SETCHARFORMAT, SCF_ALL, (LPARAM)remote_ptr);
 
-	// ÊÍ·Å¸Õ²ÅÎªÄ¿±ê½ø³Ì·ÖÅäµÄÄÚ´æ
+	// é‡Šæ”¾åˆšæ‰ä¸ºç›®æ ‡è¿›ç¨‹åˆ†é…çš„å†…å­˜
 	br = VirtualFreeEx(h_process, remote_ptr, 0, MEM_RELEASE);
 	assert(br);
 }

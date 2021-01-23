@@ -36,4 +36,4 @@ ywcolorpp.exe /console /image seperate.exe /class RichEdit20A /foreground #10101
 
 实现上，主要是跨进程向另一个窗口发送消息，SendMessage。改背景色很简单，颜色就放在了SendMessage的param里。改前景色稍复杂，需要先在目标进程地址空间分配内存，填满具体参数后，再SendMessage把刚才分配的内存的指针地址传过去。不能在本进程分配内存，因为目标进程和本进程是两个地址空间，否则不但不能用，还会直接crash掉目标进程。
 
-亚伟速录机程序，可执行文件是seperate.exe，编辑空间是RichEdit20A，这里也附上了一个最简单的实现用来测试，在seperate文件夹里。
+亚伟速录机程序，可执行文件是seperate.exe，编辑控件是RichEdit20A，这里也附上了一个最简单的实现用来测试，在seperate文件夹里。
